@@ -1,43 +1,33 @@
-using System;
-using CameraSystem;
+using CharacterSystem;
 using UnityEngine;
 using Zenject;
 
 namespace TileGenerationSystem
 {
-    public class TileSpawner : MonoBehaviour
+    public class TileSpawner : ITickable
     {
-        [SerializeField] private float _minDistanceToLastTile;
-        [SerializeField] private float _maxDistanceToFisrtTile;
+        private float _minDistanceToLastTile = 3f;
         
-        private CameraMovement _cameraMovement; 
+        private MovementController _movementController; 
         private TileGenerator _tileGenerator;
         
         [Inject]
-        public void Construct(CameraMovement cameraMovement, TileGenerator tileGenerator)
+        public TileSpawner(MovementController movementController, TileGenerator tileGenerator)
         {
-            _cameraMovement = cameraMovement;
+            _movementController = movementController;
             _tileGenerator = tileGenerator;
         }
-
-        private void Update()
+        
+        public void Tick()
         {
-            CheckFirstTile();
             CheckLastTile();
         }
 
         private void CheckLastTile()
         {
-            if (Vector3.Distance(_cameraMovement.transform.position, _tileGenerator.LastTile.position) <= _minDistanceToLastTile)
+            if (Vector3.Distance(_movementController.CameraTransform.position, _tileGenerator.LastTile.position) < _minDistanceToLastTile)
             {
                 _tileGenerator.AddLastTile();
-            }
-        }
-        
-        private void CheckFirstTile()
-        {
-            if (Vector3.Distance(_cameraMovement.transform.position, _tileGenerator.FirstTile.position) <= _maxDistanceToFisrtTile)
-            {
                 _tileGenerator.RemoveFirstTile();
             }
         }
