@@ -24,6 +24,7 @@ namespace InputSystem
             _inputAction.GlobalActionMap.MoveLeft.started += MoveLeft;
             _inputAction.GlobalActionMap.Jump.started += Jump;
             _inputAction.GlobalActionMap.Slide.started += Slide;
+            _inputAction.GlobalActionMap.Slide.canceled += StopSlideLoop;
         }
 
         public void EnableInput()
@@ -56,6 +57,11 @@ namespace InputSystem
             _movementController.Slide();
         }
         
+        private void StopSlideLoop(InputAction.CallbackContext obj)
+        {
+            _movementController.StopSlideLoop();
+        }
+            
         private void OnDestroy()
         {
             DisableInput();

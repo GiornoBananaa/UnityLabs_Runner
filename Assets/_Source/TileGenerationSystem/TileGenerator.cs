@@ -19,11 +19,11 @@ namespace TileGenerationSystem
             }
         }
 
-        private const int ENABLED_TILES_COUNT = 3;
-        private const int TILE_INSTANCES_COUNT = 5;
+        private const int ENABLED_TILES_COUNT = 5;
+        private const int TILE_INSTANCES_COUNT = 3;
         
-        private readonly Vector3 _tileSpawnOffset = new Vector3(0,0,6);
-        private readonly Vector3 _firstTilePosition = new Vector3(0,0,-6);
+        private readonly Vector3 _tileSpawnOffset = new Vector3(0,0,20);
+        private readonly Vector3 _firstTilePosition = new Vector3(0,0,-20);
         private List<Tile> _disabledTile;
         private List<Tile> _enabledTile;
         private TileDataSO _startTile;

@@ -17,7 +17,12 @@ namespace CharacterSystem
         
         public void PlaySlide()
         {
-            _animator.SetTrigger(SLIDE_HASH);
+            _animator.SetBool(SLIDE_HASH, true);
+        }
+        
+        public void StopSlide()
+        {
+            _animator.SetBool(SLIDE_HASH, false);
         }
         
         public void PlayJump()

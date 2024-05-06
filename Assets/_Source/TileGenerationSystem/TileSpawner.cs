@@ -6,7 +6,7 @@ namespace TileGenerationSystem
 {
     public class TileSpawner : ITickable
     {
-        private float _minDistanceToLastTile = 3f;
+        private float _minDistanceToLastTile = 35f;
         
         private MovementController _movementController; 
         private TileGenerator _tileGenerator;

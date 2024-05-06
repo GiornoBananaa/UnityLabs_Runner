@@ -20,6 +20,8 @@ namespace CharacterSystem
         private bool _isChangingSide;
         private bool _isJumping;
         private bool _isSliding;
+        private bool _continueSlide;
+        private bool _slideAnimationIsEnded;
         private bool _isMovingForward;
         
         public event Action<float> OnDistanceChanged;
@@ -60,7 +62,7 @@ namespace CharacterSystem
             _rigidbody.AddForce(new Vector3(0, _jumpForce, 0));
             _isJumping = true;
             _animationController.PlayJump();
-            if (_isSliding) StopSlide();
+            if (_isSliding) EndSlide();
         }
 
         public void Slide()
@@ -68,7 +70,9 @@ namespace CharacterSystem
             _rigidbody.AddForce(new Vector3(0, -_jumpForce * 2, 0));
             _animationController.PlaySlide();
             _isSliding = true;
-            _animationController.OnSlideEnd += StopSlide;
+            _continueSlide = true;
+            _slideAnimationIsEnded = false;
+            _animationController.OnSlideEnd += OnSlideAnimationEnd;
         }
         
         public void MoveLeft()
@@ -92,6 +96,13 @@ namespace CharacterSystem
             _isMovingForward = false;
         }
         
+        public void StopSlideLoop()
+        {
+            _continueSlide = false;
+            if (_slideAnimationIsEnded)
+                EndSlide();
+        }
+        
         private void MoveForward()
         {
             if(!_isMovingForward) return;
@@ -102,10 +113,21 @@ namespace CharacterSystem
             OnDistanceChanged?.Invoke(_passedDistance);
         }
         
-        private void StopSlide()
+        private void OnSlideAnimationEnd()
+        {
+            _slideAnimationIsEnded = true;
+            if(!_continueSlide)
+            {
+                EndSlide();
+            }
+        }
+        
+        private void EndSlide()
         {
             _isSliding = false;
-            _animationController.OnSlideEnd -= StopSlide;
+            _continueSlide = false;
+            _animationController.StopSlide();
+            _animationController.OnSlideEnd -= OnSlideAnimationEnd;
         }
         
         private void StopJump()
