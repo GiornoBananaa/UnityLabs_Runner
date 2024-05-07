@@ -7,7 +7,7 @@ namespace TileGenerationSystem
 {
     public class TileGenerator
     {
-        public class Tile
+        private class Tile
         {
             public GameObject GameObject;
             public TileDataSO TileData;
@@ -22,8 +22,8 @@ namespace TileGenerationSystem
         private const int ENABLED_TILES_COUNT = 5;
         private const int TILE_INSTANCES_COUNT = 3;
         
-        private readonly Vector3 _tileSpawnOffset = new Vector3(0,0,20);
-        private readonly Vector3 _firstTilePosition = new Vector3(0,0,-20);
+        private readonly Vector3 _tileSpawnOffset = new (0,0,20);
+        private readonly Vector3 _firstTilePosition = new (0,0,0);
         private List<Tile> _disabledTile;
         private List<Tile> _enabledTile;
         private TileDataSO _startTile;
@@ -71,7 +71,6 @@ namespace TileGenerationSystem
             List<TileDataSO> uncheckedConnectedTiles = _enabledTile.Count > 0
                 ? new List<TileDataSO>(_enabledTile[^1].TileData.ConnectableTiles)
                 : new List<TileDataSO>(_startTile.ConnectableTiles);
-            
             
             Tile nextTile = null;
             while (uncheckedConnectedTiles.Count != 0)

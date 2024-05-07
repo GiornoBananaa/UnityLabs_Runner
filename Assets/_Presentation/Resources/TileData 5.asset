@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4415392a44eb9943bb6a1b09354d41c, type: 3}
-  m_Name: Tile1Data
+  m_Name: TileData 5
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 6339165906817230726, guid: 3c0ab40bf3b326c46a2bc835899e2266, type: 3}
+  <Prefab>k__BackingField: {fileID: 6339165906817230726, guid: eaeccfbf5280c724688c3b7643de620e, type: 3}
   <Weight>k__BackingField: 1
   <ConnectableTiles>k__BackingField:
+  - {fileID: 11400000, guid: 6ca264cb77dc13e47976bb6042abe67c, type: 2}
   - {fileID: 11400000, guid: 648c2a78ee45b674c850f956a3b0c16f, type: 2}
+  - {fileID: 11400000, guid: bf82fdb786f547641b511fa954dfb47a, type: 2}
+  - {fileID: 11400000, guid: fb5a0a2674d294f4bb222f99a2b2ccd0, type: 2}
