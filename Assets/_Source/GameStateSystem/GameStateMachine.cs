@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CharacterSystem;
-using UnityEngine;
 using Zenject;
 
 namespace GameStateSystem
@@ -17,7 +15,7 @@ namespace GameStateSystem
             SetupStates(states);
         }
         
-        public bool ChangeState<T>()
+        public bool ChangeState<T>() where T: AState
         {
             _currAState?.Exit();
             if (_states.ContainsKey(typeof(T)))

@@ -7,12 +7,29 @@ namespace TileGenerationSystem
 {
     public class TileGenerator
     {
-        private class Tile
+        /*
+        public class ObjectPool<T>
+        {
+            private IFactory<T> _objectFactory;
+            
+            private List<T> _disabledTile;
+            private List<T> _enabledTile;
+            
+            public Transform Last => _enabledTile[^1].GameObject.transform;
+            public Transform First => _enabledTile[0].GameObject.transform;
+            
+            public ObjectPool(IFactory<T> objectFactory)
+            {
+                _objectFactory = objectFactory;
+            }
+        }*/
+        
+        private class TileInstance
         {
             public GameObject GameObject;
             public TileDataSO TileData;
 
-            public Tile(GameObject gameObject, TileDataSO tileData)
+            public TileInstance(GameObject gameObject, TileDataSO tileData)
             {
                 GameObject = gameObject;
                 TileData = tileData;
@@ -24,8 +41,8 @@ namespace TileGenerationSystem
         
         private readonly Vector3 _tileSpawnOffset = new (0,0,20);
         private readonly Vector3 _firstTilePosition = new (0,0,0);
-        private List<Tile> _disabledTile;
-        private List<Tile> _enabledTile;
+        private List<TileInstance> _disabledTile;
+        private List<TileInstance> _enabledTile;
         private TileDataSO _startTile;
 
         public Transform LastTile => _enabledTile[^1].GameObject.transform;
@@ -34,8 +51,8 @@ namespace TileGenerationSystem
         [Inject]
         public TileGenerator(TilesDataSO tilesData)
         {
-            _disabledTile = new List<Tile>();
-            _enabledTile = new List<Tile>();
+            _disabledTile = new List<TileInstance>();
+            _enabledTile = new List<TileInstance>();
             
             _startTile = tilesData.FirstTile;
             
@@ -46,9 +63,9 @@ namespace TileGenerationSystem
 
                 for (int i = 0; i < TILE_INSTANCES_COUNT; i++)
                 {
-                    Tile newTile = new Tile(Object.Instantiate(tileData.Prefab), tileData);
-                    newTile.GameObject.SetActive(false);
-                    _disabledTile.Add(newTile);
+                    TileInstance newTileInstance = new TileInstance(Object.Instantiate(tileData.Prefab), tileData);
+                    newTileInstance.GameObject.SetActive(false);
+                    _disabledTile.Add(newTileInstance);
                 }
             }
             
@@ -60,10 +77,10 @@ namespace TileGenerationSystem
         
         public void RemoveFirstTile()
         {
-            Tile tile = _enabledTile[0];
-            tile.GameObject.SetActive(false);
-            _enabledTile.Remove(tile);
-            _disabledTile.Add(tile);
+            TileInstance tileInstance = _enabledTile[0];
+            tileInstance.GameObject.SetActive(false);
+            _enabledTile.Remove(tileInstance);
+            _disabledTile.Add(tileInstance);
         }
 
         public void AddLastTile()
@@ -72,7 +89,7 @@ namespace TileGenerationSystem
                 ? new List<TileDataSO>(_enabledTile[^1].TileData.ConnectableTiles)
                 : new List<TileDataSO>(_startTile.ConnectableTiles);
             
-            Tile nextTile = null;
+            TileInstance nextTileInstance = null;
             while (uncheckedConnectedTiles.Count != 0)
             {
                 float allTilesWeight = 0;
@@ -98,19 +115,19 @@ namespace TileGenerationSystem
                 {
                     if (tile.TileData == pickedTileData)
                     {
-                        nextTile = tile;
+                        nextTileInstance = tile;
                         break;
                     }
                 }
                 
-                if (nextTile != null) break;
+                if (nextTileInstance != null) break;
                 uncheckedConnectedTiles.Remove(pickedTileData);
             }
 
-            EnableTile(nextTile);
+            EnableTile(nextTileInstance);
         }
         
-        private void EnableTile(Tile tile)
+        private void EnableTile(TileInstance tileInstance)
         {
             Vector3 lastTilePosition;
             if (_enabledTile.Count != 0)
@@ -118,10 +135,10 @@ namespace TileGenerationSystem
             else
                 lastTilePosition = _firstTilePosition;
 
-            _disabledTile.Remove(tile);
-            _enabledTile.Add(tile);
-            tile.GameObject.transform.position = lastTilePosition + _tileSpawnOffset;
-            tile.GameObject.SetActive(true);
+            _disabledTile.Remove(tileInstance);
+            _enabledTile.Add(tileInstance);
+            tileInstance.GameObject.transform.position = lastTilePosition + _tileSpawnOffset;
+            tileInstance.GameObject.SetActive(true);
         }
     }
 }

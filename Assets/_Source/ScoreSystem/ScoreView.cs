@@ -1,3 +1,5 @@
+using System;
+using ScoreSystem;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -20,6 +22,11 @@ namespace UI
         private void ChangeScore(int score)
         {
             _scoreText.text = $"Score: {score}";
+        }
+
+        private void OnDestroy()
+        {
+            _scoreCounter.OnScoreChange -= ChangeScore;
         }
     }
 }

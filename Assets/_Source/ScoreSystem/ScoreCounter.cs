@@ -1,7 +1,7 @@
 ﻿using System;
 using CharacterSystem;
 
-namespace UI
+namespace ScoreSystem
 {
     public class ScoreCounter
     {

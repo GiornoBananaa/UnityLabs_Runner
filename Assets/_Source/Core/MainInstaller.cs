@@ -1,6 +1,7 @@
 using CharacterSystem;
 using GameStateSystem;
 using InputSystem;
+using ScoreSystem;
 using TileGenerationSystem;
 using UI;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace Core
             Container.BindInterfacesAndSelfTo<MovementController>().AsSingle().WithArguments(_character, _cameraTransform, _groundLayerMask);
             
             //Generation
-            Container.BindInterfacesAndSelfTo<TileSpawner>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TileSpawner>().AsSingle().NonLazy();
             Container.Bind<TileGenerator>().AsSingle();
             
             //SO

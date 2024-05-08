@@ -25,6 +25,7 @@ namespace GameStateSystem
         private void OnLoose()
         {
             Owner.ChangeState<EndGameState>();
+            _obstaclesInteraction.OnObstacleHit -= OnLoose;
         }
         
         public override void Exit()

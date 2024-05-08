@@ -64,6 +64,11 @@ namespace InputSystem
             
         private void OnDestroy()
         {
+            _inputAction.GlobalActionMap.MoveRight.started -= MoveRight;
+            _inputAction.GlobalActionMap.MoveLeft.started -= MoveLeft;
+            _inputAction.GlobalActionMap.Jump.started -= Jump;
+            _inputAction.GlobalActionMap.Slide.started -= Slide;
+            _inputAction.GlobalActionMap.Slide.canceled -= StopSlideLoop;
             DisableInput();
         }
     }

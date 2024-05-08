@@ -9,13 +9,11 @@ namespace Core
 {
     public class Bootstrapper : MonoBehaviour
     {
-        private TileSpawner _tileSpawner;
         private GameStateMachine _gameStateMachine;
         
         [Inject] 
-        private void Construct(TileSpawner tileSpawner, GameStateMachine gameStateMachine)
+        private void Construct(GameStateMachine gameStateMachine)
         {
-            _tileSpawner = tileSpawner;
             _gameStateMachine = gameStateMachine;
         }
 
